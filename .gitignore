@@ -5,7 +5,7 @@ uploads/
 src/GraphQlApi/redis
 # for JetBrains IDEs
 .idea/
-.env/
+.env
 # for developers to store files in that shouldn't be committed
 local/
 
