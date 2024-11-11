@@ -26,7 +26,7 @@ import { saveImageToFirebase } from "../helpers/function";
 // import imageUploadQueue from "../redis/imageQueue";
 // import { resolve } from "path";
 import { sendApplicationEmail } from "../../email/index";
-import { DateTimeResolver } from "graphql-scalars";
+
 import Stripe from 'stripe';
 export const test={
   type:new GraphQLObjectType({
@@ -607,7 +607,7 @@ export const updatePropertyDetails={
   name:{type:GraphQLString},
   rentfrequency:{type:GraphQLInt},
   type:{type:GraphQLString},
-  availablefrom:{type:DateTimeResolver},
+  availablefrom:{type:GraphQLString},
   propertyname:{type:GraphQLString},
   images:{ type:new GraphQLList(GraphQLUpload)}
   

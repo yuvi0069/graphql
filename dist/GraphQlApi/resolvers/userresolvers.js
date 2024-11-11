@@ -12,7 +12,6 @@ const function_2 = require("../helpers/function");
 // import imageUploadQueue from "../redis/imageQueue";
 // import { resolve } from "path";
 const index_1 = require("../../email/index");
-const graphql_scalars_1 = require("graphql-scalars");
 exports.test = {
     type: new graphql_1.GraphQLObjectType({
         name: 'TestResponse',
@@ -557,7 +556,7 @@ exports.updatePropertyDetails = {
         name: { type: graphql_1.GraphQLString },
         rentfrequency: { type: graphql_1.GraphQLInt },
         type: { type: graphql_1.GraphQLString },
-        availablefrom: { type: graphql_scalars_1.DateTimeResolver },
+        availablefrom: { type: graphql_1.GraphQLString },
         propertyname: { type: graphql_1.GraphQLString },
         images: { type: new graphql_1.GraphQLList(graphql_upload_1.GraphQLUpload) }
     },

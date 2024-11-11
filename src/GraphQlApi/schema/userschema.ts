@@ -1,5 +1,5 @@
 import {GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLList, GraphQLInt, GraphQLBoolean} from 'graphql';
-import { DateTimeResolver } from 'graphql-scalars';
+
 const Property = new GraphQLObjectType({
   name: 'Property',
   fields: {
