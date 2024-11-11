@@ -28,14 +28,28 @@ import { saveImageToFirebase } from "../helpers/function";
 import { sendApplicationEmail } from "../../email/index";
 import { DateTimeResolver } from "graphql-scalars";
 import Stripe from 'stripe';
-
+export const test={
+  type:new GraphQLObjectType({
+    name:'TestResponse',
+    fields:{
+      detail:{type:GraphQLString},
+      code:{type:GraphQLInt} 
+    }
+  }),
+  resolve:async(parent:any,args:any,context:any)=>{
+  return{
+    code:1,
+    detail:`test sucessfully`
+  }
+  }
+}
 export const changePasswordByUserUuid={
     type:new GraphQLObjectType({
       name:'ChangePasswordResponse',
       fields:{
         detail:{type:GraphQLString},
         code:{type:GraphQLInt},
-     
+        
       }
     }),
     args:{

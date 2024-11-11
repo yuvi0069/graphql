@@ -14,7 +14,8 @@ const RootQuery = new graphql_1.GraphQLObjectType({
         getPropertyDetailsBylandLordUuid: userresolvers_1.getPropertyDetailsBylandLordUuid,
         getfilterPropertyDertails: userresolvers_1.getfilterPropertyDertails,
         getLandlord: userresolvers_1.getLandlord,
-        getTenant: userresolvers_1.getTenant
+        getTenant: userresolvers_1.getTenant,
+        test: userresolvers_1.test
     }
 });
 const RootMutation = new graphql_1.GraphQLObjectType({
