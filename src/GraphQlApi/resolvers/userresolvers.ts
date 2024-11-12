@@ -27,29 +27,15 @@ import { saveImageToFirebase } from "../helpers/function";
 // import { resolve } from "path";
 import { sendApplicationEmail } from "../../email/index";
 
-import Stripe from 'stripe';
-export const test={
-  type:new GraphQLObjectType({
-    name:'TestResponse',
-    fields:{
-      detail:{type:GraphQLString},
-      code:{type:GraphQLInt} 
-    }
-  }),
-  resolve:async(parent:any,args:any,context:any)=>{
-  return{
-    code:1,
-    detail:`test sucessfully`
-  }
-  }
-}
+// import Stripe from 'stripe';
+// const stripe = new Stripe("sk_test_51QF8pMGVR3TEoY4WTMGiRC87vcluSFXpMBqJwoF6G9uF68Dc1qpD5se1bI5aE8irx2VW95sC7Lqujis2QawAUAUF00awxR4OfG");
 export const changePasswordByUserUuid={
     type:new GraphQLObjectType({
       name:'ChangePasswordResponse',
       fields:{
         detail:{type:GraphQLString},
         code:{type:GraphQLInt},
-        
+     
       }
     }),
     args:{
@@ -660,6 +646,8 @@ export const getfilterPropertyDertails={
     fields:{
       detail:{type:GraphQLString},
       code:{type:GraphQLString},
+      totalrecords:{type:GraphQLInt},
+      totalpages:{type:GraphQLInt},
       filterData:{type:new GraphQLList(FilterPropertyType)},
       hasNextPage: { type: GraphQLBoolean },
       nextPage: { type: GraphQLInt } 
@@ -689,11 +677,12 @@ export const getfilterPropertyDertails={
   }
   
   else{
-    console.log(filteredData.totalPages);
-    console.log(filteredData.totalRecords);
+ 
     return{
       detail:`Property found`,
       code:1,
+      totalrecords:filteredData.totalRecords,
+      totalpages:filteredData.totalPages,
       filterData:filteredData.filterData,
       hasNextPage: filteredData.hasNextPage,
       nextPage: filteredData.nextPage

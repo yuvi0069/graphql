@@ -35,67 +35,67 @@ export const authorizationMiddleware = (
   }
 };
 
-export const authorizationTokenMiddleware = (
-  isTokenRequired: boolean = true,
-  usersAllowed: string[] = []
-) => {
-  return async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      //* Get token from request header and remove 'Bearer ' from it
-      let token = (
-        req.header("x-auth-token") || req.header("Authorization")
-      )?.replace(/Bearer\s+/g, "");
+// export const authorizationTokenMiddleware = (
+//   isTokenRequired: boolean = true,
+//   usersAllowed: string[] = []
+// ) => {
+//   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
+//     try {
+//       //* Get token from request header and remove 'Bearer ' from it
+//       let token = (
+//         req.header("x-auth-token") || req.header("Authorization")
+//       )?.replace(/Bearer\s+/g, "");
 
-      //* If token is required but not provided, return an error
-      if (isTokenRequired && !token) {
-        return res.status(400).json({ message: "Token is required." });
-      }
+//       //* If token is required but not provided, return an error
+//       if (isTokenRequired && !token) {
+//         return res.status(400).json({ message: "Token is required." });
+//       }
 
-      //* If no token is required, proceed to the next middleware
-      if (!isTokenRequired && !token) {
-        return next();
-      }
+//       //* If no token is required, proceed to the next middleware
+//       if (!isTokenRequired && !token) {
+//         return next();
+//       }
 
-      //* Verify token
-      let decoded: DecodedToken;
-      try {
-        decoded = verify(
-          token,
-          process.env.JWT_SECRET || "rent-payment"
-        ) as DecodedToken;
-      } catch (error) {
-        return res.status(401).json({ message: "Invalid token." });
-      }
+//       //* Verify token
+//       let decoded: DecodedToken;
+//       try {
+//         decoded = verify(
+//           token,
+//           process.env.JWT_SECRET || "rent-payment"
+//         ) as DecodedToken;
+//       } catch (error) {
+//         return res.status(401).json({ message: "Invalid token." });
+//       }
 
-      //* Fetch user details using the userId from the decoded token
-      const user = await getUserByUserId(decoded.userId);
-      if (!user || !user.is_active) {
-        return res
-          .status(401)
-          .json({ message: "Unauthorized or inactive user." });
-      }
+//       //* Fetch user details using the userId from the decoded token
+//       const user = await getUserByUserId(decoded.userId);
+//       if (!user || !user.is_active) {
+//         return res
+//           .status(401)
+//           .json({ message: "Unauthorized or inactive user." });
+//       }
 
-      //* Check if user is allowed to access the route
-      if (
-        usersAllowed.length === 0 ||
-        usersAllowed.includes("*") ||
-        usersAllowed.includes(user.role_id)
-      ) {
-        //* Attach user details to the request object
-        req.user = {
-          userId: user.uuid,
-          role: user.role,
-          token,
-        };
-        return next();
-      } else {
-        return res.status(403).json({ message: "Access denied." });
-      }
-    } catch (error) {
-      return res.status(500).json({ message: "Internal Server Error", error });
-    }
-  };
-};
+//       //* Check if user is allowed to access the route
+//       if (
+//         usersAllowed.length === 0 ||
+//         usersAllowed.includes("*") ||
+//         usersAllowed.includes(user.role_id)
+//       ) {
+//         //* Attach user details to the request object
+//         req.user = {
+//           userId: user.uuid,
+//           role: user.role,
+//           token,
+//         };
+//         return next();
+//       } else {
+//         return res.status(403).json({ message: "Access denied." });
+//       }
+//     } catch (error) {
+//       return res.status(500).json({ message: "Internal Server Error", error });
+//     }
+//   };
+// };
 export const verifyToken = (
   req: RequestWithUser,
   res: Response,
