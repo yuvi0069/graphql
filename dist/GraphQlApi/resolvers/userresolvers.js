@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendTeantApplication = exports.getTenant = exports.getLandlord = exports.deletePropertyDetailsbyId = exports.getfilterPropertyDertails = exports.updatePropertyDetails = exports.getPropertyDetailsBylandLordUuid = exports.getPropertyDetailsById = exports.getTentantDetailsByUuid = exports.getLandlordDetailsByUuid = exports.addtentantDetails = exports.addPropertyDetails = exports.updateUserDetails = exports.getUserDetailsByUserUuid = exports.changePasswordByUserUuid = exports.test = void 0;
+exports.sendTeantApplication = exports.getTenant = exports.getLandlord = exports.deletePropertyDetailsbyId = exports.getfilterPropertyDertails = exports.updatePropertyDetails = exports.getPropertyDetailsBylandLordUuid = exports.getPropertyDetailsById = exports.getTentantDetailsByUuid = exports.getLandlordDetailsByUuid = exports.addtentantDetails = exports.addPropertyDetails = exports.updateUserDetails = exports.getUserDetailsByUserUuid = exports.changePasswordByUserUuid = void 0;
 const function_1 = require("../helpers/function");
 const db_1 = require("../models/db");
 const graphql_1 = require("graphql");
@@ -12,21 +12,8 @@ const function_2 = require("../helpers/function");
 // import imageUploadQueue from "../redis/imageQueue";
 // import { resolve } from "path";
 const index_1 = require("../../email/index");
-exports.test = {
-    type: new graphql_1.GraphQLObjectType({
-        name: 'TestResponse',
-        fields: {
-            detail: { type: graphql_1.GraphQLString },
-            code: { type: graphql_1.GraphQLInt }
-        }
-    }),
-    resolve: async (parent, args, context) => {
-        return {
-            code: 1,
-            detail: `test sucessfully`
-        };
-    }
-};
+// import Stripe from 'stripe';
+// const stripe = new Stripe("sk_test_51QF8pMGVR3TEoY4WTMGiRC87vcluSFXpMBqJwoF6G9uF68Dc1qpD5se1bI5aE8irx2VW95sC7Lqujis2QawAUAUF00awxR4OfG");
 exports.changePasswordByUserUuid = {
     type: new graphql_1.GraphQLObjectType({
         name: 'ChangePasswordResponse',
@@ -608,6 +595,8 @@ exports.getfilterPropertyDertails = {
         fields: {
             detail: { type: graphql_1.GraphQLString },
             code: { type: graphql_1.GraphQLString },
+            totalrecords: { type: graphql_1.GraphQLInt },
+            totalpages: { type: graphql_1.GraphQLInt },
             filterData: { type: new graphql_1.GraphQLList(userschema_1.FilterPropertyType) },
             hasNextPage: { type: graphql_1.GraphQLBoolean },
             nextPage: { type: graphql_1.GraphQLInt }
@@ -636,11 +625,11 @@ exports.getfilterPropertyDertails = {
             };
         }
         else {
-            console.log(filteredData.totalPages);
-            console.log(filteredData.totalRecords);
             return {
                 detail: `Property found`,
                 code: 1,
+                totalrecords: filteredData.totalRecords,
+                totalpages: filteredData.totalPages,
                 filterData: filteredData.filterData,
                 hasNextPage: filteredData.hasNextPage,
                 nextPage: filteredData.nextPage

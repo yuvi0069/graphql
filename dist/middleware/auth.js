@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.withVerifyToken = exports.verifyUser = exports.verifyToken = exports.authorizationTokenMiddleware = exports.authorizationMiddleware = void 0;
+exports.withVerifyToken = exports.verifyUser = exports.verifyToken = exports.authorizationMiddleware = void 0;
 const constant_helper_1 = require("../helpers/constant.helper");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const db_1 = require("../GraphQlApi/models/db");
@@ -23,56 +23,62 @@ const authorizationMiddleware = (req, res, next) => {
     }
 };
 exports.authorizationMiddleware = authorizationMiddleware;
-const authorizationTokenMiddleware = (isTokenRequired = true, usersAllowed = []) => {
-    return async (req, res, next) => {
-        try {
-            //* Get token from request header and remove 'Bearer ' from it
-            let token = (req.header("x-auth-token") || req.header("Authorization"))?.replace(/Bearer\s+/g, "");
-            //* If token is required but not provided, return an error
-            if (isTokenRequired && !token) {
-                return res.status(400).json({ message: "Token is required." });
-            }
-            //* If no token is required, proceed to the next middleware
-            if (!isTokenRequired && !token) {
-                return next();
-            }
-            //* Verify token
-            let decoded;
-            try {
-                decoded = (0, jsonwebtoken_1.verify)(token, process.env.JWT_SECRET || "rent-payment");
-            }
-            catch (error) {
-                return res.status(401).json({ message: "Invalid token." });
-            }
-            //* Fetch user details using the userId from the decoded token
-            const user = await (0, db_1.getUserByUserId)(decoded.userId);
-            if (!user || !user.is_active) {
-                return res
-                    .status(401)
-                    .json({ message: "Unauthorized or inactive user." });
-            }
-            //* Check if user is allowed to access the route
-            if (usersAllowed.length === 0 ||
-                usersAllowed.includes("*") ||
-                usersAllowed.includes(user.role_id)) {
-                //* Attach user details to the request object
-                req.user = {
-                    userId: user.uuid,
-                    role: user.role,
-                    token,
-                };
-                return next();
-            }
-            else {
-                return res.status(403).json({ message: "Access denied." });
-            }
-        }
-        catch (error) {
-            return res.status(500).json({ message: "Internal Server Error", error });
-        }
-    };
-};
-exports.authorizationTokenMiddleware = authorizationTokenMiddleware;
+// export const authorizationTokenMiddleware = (
+//   isTokenRequired: boolean = true,
+//   usersAllowed: string[] = []
+// ) => {
+//   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
+//     try {
+//       //* Get token from request header and remove 'Bearer ' from it
+//       let token = (
+//         req.header("x-auth-token") || req.header("Authorization")
+//       )?.replace(/Bearer\s+/g, "");
+//       //* If token is required but not provided, return an error
+//       if (isTokenRequired && !token) {
+//         return res.status(400).json({ message: "Token is required." });
+//       }
+//       //* If no token is required, proceed to the next middleware
+//       if (!isTokenRequired && !token) {
+//         return next();
+//       }
+//       //* Verify token
+//       let decoded: DecodedToken;
+//       try {
+//         decoded = verify(
+//           token,
+//           process.env.JWT_SECRET || "rent-payment"
+//         ) as DecodedToken;
+//       } catch (error) {
+//         return res.status(401).json({ message: "Invalid token." });
+//       }
+//       //* Fetch user details using the userId from the decoded token
+//       const user = await getUserByUserId(decoded.userId);
+//       if (!user || !user.is_active) {
+//         return res
+//           .status(401)
+//           .json({ message: "Unauthorized or inactive user." });
+//       }
+//       //* Check if user is allowed to access the route
+//       if (
+//         usersAllowed.length === 0 ||
+//         usersAllowed.includes("*") ||
+//         usersAllowed.includes(user.role_id)
+//       ) {
+//         //* Attach user details to the request object
+//         req.user = {
+//           userId: user.uuid,
+//           role: user.role,
+//           token,
+//         };
+//         return next();
+//       } else {
+//         return res.status(403).json({ message: "Access denied." });
+//       }
+//     } catch (error) {
+//       return res.status(500).json({ message: "Internal Server Error", error });
+//     }
+//   };
+// };
 const verifyToken = (req, res, next) => {
     let token = (req.header("x-auth-token") || req.header("Authorization"))?.replace(/Bearer\s+/g, "");
     if (!token) {

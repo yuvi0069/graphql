@@ -1,5 +1,5 @@
 import {GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLList, GraphQLInt} from 'graphql';
-import { getUserDetailsByUserUuid,changePasswordByUserUuid,updateUserDetails,addPropertyDetails, getLandlordDetailsByUuid, getTentantDetailsByUuid, getPropertyDetailsById, getPropertyDetailsBylandLordUuid, updatePropertyDetails, addtentantDetails, getfilterPropertyDertails, deletePropertyDetailsbyId, getLandlord, getTenant, sendTeantApplication, test } from './resolvers/userresolvers';
+import { getUserDetailsByUserUuid,changePasswordByUserUuid,updateUserDetails,addPropertyDetails, getLandlordDetailsByUuid, getTentantDetailsByUuid, getPropertyDetailsById, getPropertyDetailsBylandLordUuid, updatePropertyDetails, addtentantDetails, getfilterPropertyDertails, deletePropertyDetailsbyId, getLandlord, getTenant, sendTeantApplication } from './resolvers/userresolvers';
 import { signInUser,logIn,verifyOtpByUserUuid,verifyUserSignUp,forgotPassword } from './resolvers/authresolvers';
 const RootQuery = new GraphQLObjectType({
     name: 'Query',
@@ -12,7 +12,7 @@ const RootQuery = new GraphQLObjectType({
       getfilterPropertyDertails,
       getLandlord,
       getTenant,
-      test
+      
     }
   });
 const RootMutation = new GraphQLObjectType({
